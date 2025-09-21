@@ -14,12 +14,18 @@ make            # compila tudo
 
 ### Exemplo de uso
 
-Servidor (porta padrão 5050):
+1. Clone o repositório
+2. Abra dois terminais, ambos no diretório do repositório clonado (CalculadoraSockets)
+3. Em um terminal rode:
+```bash
+make
+```
+No terminal do servidor (porta padrão 5050):
 ```bash
 make run-server
 ```
 
-Cliente (porta e IP padrões - 127.0.0.1:5050):
+No terminaldo do cliente (porta e IP padrões - 127.0.0.1:5050):
 ```bash
 make run-client
 ADD 10 3
