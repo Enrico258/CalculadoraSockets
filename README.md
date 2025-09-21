@@ -1,5 +1,7 @@
 # Calculadora com sockets
 
+Enrico Cuono Alves Pereira - 10402875
+
 Projeto acadêmico de uma aplicação client-servidor, usando sockets TCP(IPv4), na qual o cliente envia operações matemáticas e o servidor executa e retorna o resultado. 
 
 ## Compilação e execução
