@@ -44,30 +44,42 @@ int main(int argc, char *argv[]) {
     char buffer[256];
     char resposta[256];
 
-    while (1) {
-        // ler comando do usuário
-        printf(">> ");
-        if (!fgets(buffer, sizeof(buffer), stdin)) {
-            break;
-        }
+while (1) {
+    // ler comando do usuário
+    printf(">> ");
+    fflush(stdout); // garante que ">> " apareça antes do input
 
-        if (strncmp(buffer, "QUIT", 4) == 0) {
-            break;
-        }
-
-        // enviar comando ao servidor
-        send(client_socket, buffer, strlen(buffer), 0);
-
-        // receber resposta
-        memset(resposta, 0, sizeof(resposta));
-        ssize_t bytes = recv(client_socket, resposta, sizeof(resposta) - 1, 0);
-        if (bytes <= 0) {
-            printf("Servidor desconectado.\n");
-            break;
-        }
-
-        printf("Resposta: %s", resposta);
+    if (!fgets(buffer, sizeof(buffer), stdin)) {
+        break;
     }
+
+    if (strncmp(buffer, "QUIT", 4) == 0) {
+        break;
+    }
+
+    // enviar comando ao servidor
+    if (send(client_socket, buffer, strlen(buffer), 0) < 0) {
+        perror("send");
+        break;
+    }
+
+    // receber resposta
+    memset(resposta, 0, sizeof(resposta));
+    ssize_t bytes = recv(client_socket, resposta, sizeof(resposta) - 1, 0);
+
+    if (bytes <= 0) {
+        printf("\nServidor desconectou.\n");
+        break;
+    }
+
+    printf("%s", resposta);
+
+    // --- novo trecho: se resposta começar com "ERR", encerra ---
+    if (strncmp(resposta, "ERR", 3) == 0) {
+        break;
+    }
+}
+
 
     close(client_socket);
     return 0;

@@ -129,6 +129,8 @@ int main() {
 
         if (ntokens != 3) {
             snprintf(response, sizeof(response), "ERR EINV Entrada inválida (esperado: CMD A B)\n");
+            send(client_socket, response, strlen(response), 0);
+            break; 
         } else {
             double a, b, result;
             char *cmd = tokens[0];
@@ -142,6 +144,8 @@ int main() {
 
                 if (!parse_double(tokens[1], &a) || !parse_double(tokens[2], &b)) {
                     snprintf(response, sizeof(response), "ERR EINV Argumento(s) não numérico(s)\n");
+                    send(client_socket, response, strlen(response), 0);
+                    break; 
                 } else if (strcmp(cmd, "ADD") == 0) {
                     result = a + b;
                     format_number(result, numbuf, sizeof(numbuf));
@@ -157,6 +161,8 @@ int main() {
                 } else if (strcmp(cmd, "DIV") == 0) {
                     if (b == 0.0) {
                         snprintf(response, sizeof(response), "ERR EZDV divisao_por_zero\n");
+                        send(client_socket, response, strlen(response), 0);
+                        break; 
                     } else {
                         result = a / b;
                         format_number(result, numbuf, sizeof(numbuf));
@@ -168,6 +174,8 @@ int main() {
             else {
                 if (!parse_double(cmd, &a) || !parse_double(arg2, &b)) {
                     snprintf(response, sizeof(response), "ERR EINV Argumento(s) não numérico(s)\n");
+                    send(client_socket, response, strlen(response), 0);
+                    break;
                 } else if (strcmp(op, "+") == 0) {
                     result = a + b;
                     format_number(result, numbuf, sizeof(numbuf));
@@ -183,6 +191,8 @@ int main() {
                 } else if (strcmp(op, "/") == 0) {
                     if (b == 0.0) {
                         snprintf(response, sizeof(response), "ERR EZDV divisao_por_zero\n");
+                        send(client_socket, response, strlen(response), 0);
+                        break;
                     } else {
                         result = a / b;
                         format_number(result, numbuf, sizeof(numbuf));
@@ -190,6 +200,8 @@ int main() {
                     }
                 } else {
                     snprintf(response, sizeof(response), "ERR EINV Operador desconhecido\n");
+                    send(client_socket, response, strlen(response), 0);
+                    break;
                 }
             }
         }
